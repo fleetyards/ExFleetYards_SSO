@@ -3,12 +3,14 @@ defmodule ExFleetYardsSSO.Umbrella.MixProject do
 
   def project do
     [
+      name: "Fleetyards SSO",
       apps_path: "apps",
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      releases: releases()
+      releases: releases(),
+      default_release: :ex_fleet_yards_sso
     ]
   end
 
