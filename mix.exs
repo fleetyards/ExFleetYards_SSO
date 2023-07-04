@@ -3,11 +3,14 @@ defmodule ExFleetYardsSSO.Umbrella.MixProject do
 
   def project do
     [
+      name: "Fleetyards SSO",
       apps_path: "apps",
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      releases: releases(),
+      default_release: :ex_fleet_yards_sso
     ]
   end
 
@@ -26,6 +29,8 @@ defmodule ExFleetYardsSSO.Umbrella.MixProject do
   defp deps do
     [
       # Required to run "mix format" on ~H/.heex files from the umbrella root
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:phoenix_live_view, ">= 0.0.0"}
     ]
   end
@@ -42,7 +47,16 @@ defmodule ExFleetYardsSSO.Umbrella.MixProject do
   defp aliases do
     [
       # run `mix setup` in all child apps
-      setup: ["cmd mix setup"]
+      setup: ["cmd mix setup"],
+      fmt: ["format"]
+    ]
+  end
+
+  defp releases do
+    [
+      ex_fleet_yards_sso: [
+        applications: [ex_fleet_yards_sso: :permanent, ex_fleet_yards_sso_web: :permanent]
+      ]
     ]
   end
 end
