@@ -5,9 +5,15 @@ import Config
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
+# Configure your database
+if System.get_env("FLEETYARDS_IN_DEVENV") == "1" do
+else
+  config :ex_fleet_yards_sso, ExFleetYardsSSO.Repo,
+    username: "fleet_yards_dev",
+    password: "fleet_yards_dev"
+end
+
 config :ex_fleet_yards_sso, ExFleetYardsSSO.Repo,
-  username: "postgres",
-  password: "postgres",
   hostname: "localhost",
   database: "ex_fleet_yards_sso_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,

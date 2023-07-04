@@ -9,10 +9,19 @@
 # move said applications out of the umbrella.
 import Config
 
+commit =
+  if is_nil(System.get_env("FLEETYARDS_GIT_COMMIT")) do
+    {hash, _} = System.cmd("git", ["rev-parse", "HEAD"])
+    hash |> String.trim()
+  else
+    System.get_env("FLEETYARDS_GIT_COMMIT")
+  end
+
 # Configure Mix tasks and generators
 config :ex_fleet_yards_sso,
   namespace: ExFleetYardsSSO,
-  ecto_repos: [ExFleetYardsSSO.Repo]
+  ecto_repos: [ExFleetYardsSSO.Repo],
+  git_commit: commit
 
 # Configures the mailer
 #
@@ -22,6 +31,8 @@ config :ex_fleet_yards_sso,
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
 config :ex_fleet_yards_sso, ExFleetYardsSSO.Mailer, adapter: Swoosh.Adapters.Local
+
+config :ex_fleet_yards_sso, ExFleetYardsSSO.Repo, migration_source: "ecto_schema_migrations"
 
 config :ex_fleet_yards_sso_web,
   namespace: ExFleetYardsSSOWeb,
@@ -70,4 +81,17 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{config_env()}.exs"
+env =
+  if Kernel.macro_exported?(Config, :config_env, 0) do
+    Config.config_env()
+  else
+    Mix.env()
+  end
+
+import_config "#{env}.exs"
+
+if File.exists?("./config/#{env}.secrets.exs") do
+  import_config("#{env}.secrets.exs")
+end
+
+config :ex_fleet_yards_sso, env: env

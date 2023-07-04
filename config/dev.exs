@@ -1,11 +1,16 @@
 import Config
 
 # Configure your database
+if System.get_env("FLEETYARDS_IN_DEVENV") == "1" do
+else
+  config :ex_fleet_yards_sso, ExFleetYardsSSO.Repo,
+    username: "fleet_yards_dev",
+    password: "fleet_yards_dev"
+end
+
 config :ex_fleet_yards_sso, ExFleetYardsSSO.Repo,
-  username: "postgres",
-  password: "postgres",
   hostname: "localhost",
-  database: "ex_fleet_yards_sso_dev",
+  database: "ex_fleet_yards_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
