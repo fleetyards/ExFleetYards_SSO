@@ -7,7 +7,8 @@ defmodule ExFleetYardsSSO.Umbrella.MixProject do
       version: "0.1.0",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      releases: releases()
     ]
   end
 
@@ -42,7 +43,16 @@ defmodule ExFleetYardsSSO.Umbrella.MixProject do
   defp aliases do
     [
       # run `mix setup` in all child apps
-      setup: ["cmd mix setup"]
+      setup: ["cmd mix setup"],
+      fmt: ["format"]
+    ]
+  end
+
+  defp releases do
+    [
+      ex_fleet_yards_sso: [
+        applications: [ex_fleet_yards_sso: :permanent, ex_fleet_yards_sso_web: :permanent]
+      ]
     ]
   end
 end
