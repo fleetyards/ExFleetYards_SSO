@@ -1,0 +1,14 @@
+name: Nix
+
+on:
+  push:
+    branches: ["main", "staging", "trying"]
+    tags-ignore:
+      - "*.*"
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+jobs:
+  nix-build:
+    uses: ./.github/workflows/nix.job.yml
