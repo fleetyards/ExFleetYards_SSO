@@ -55,7 +55,8 @@ defmodule ExFleetYardsSSO.Umbrella.MixProject do
   defp releases do
     [
       ex_fleet_yards_sso: [
-        applications: [ex_fleet_yards_sso: :permanent, ex_fleet_yards_sso_web: :permanent]
+        applications: [ex_fleet_yards_sso: :permanent, ex_fleet_yards_sso_web: :permanent],
+        config_providers: [{ExFleetYardsSSO.Config.ReleaseRuntimeProvider, []}]
       ]
     ]
   end
